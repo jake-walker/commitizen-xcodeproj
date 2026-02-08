@@ -17,6 +17,8 @@ class XcodeprojVersionProvider(VersionProvider):
             self.config = always_merger.merge(
                 self.default_config.copy(), config._settings["commitizen_xcodeproj"]
             )
+        else:
+            self.config = self.default_config.copy()
 
         self.__verify_config()
 
@@ -62,9 +64,6 @@ class XcodeprojVersionProvider(VersionProvider):
     def __verify_config(self):
         allowed = ["left", "right"]
         if self.config["fill_missing"] not in allowed:
-            raise InvalidConfigurationError(
-                f"Filler for missing version specifier not one of {allowed}"
-            )
             raise InvalidConfigurationError(
                 f"Filler for missing version specifier not one of {allowed}"
             )
