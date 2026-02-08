@@ -4,14 +4,14 @@ version = "0.2.0"
 description = "Commitizen version provider for Xcode projects."
 authors = ["Karsten Silkenbäumer <993392+kassi@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "commitizen_xcodeproj", from = "src"}]
+packages = [{ include = "commitizen_xcodeproj", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 deepmerge = "^1.1.1"
+commitizen = "^4.13.6"
 
 [tool.poetry.group.dev.dependencies]
-commitizen = "^3.24.0"
 pytest = "^8.1.1"
 pytest-watcher = "^0.4.2"
 pytest-mock = "^3.14.0"

@@ -1,22 +1,22 @@
-from commitizen.providers import VersionProvider
-from commitizen.exceptions import InvalidConfigurationError
-from deepmerge import always_merger
+import re
 from pathlib import Path
-import glob, re
 
-from pprint import pprint
+from commitizen.exceptions import InvalidConfigurationError
+from commitizen.providers.base_provider import VersionProvider
+from deepmerge import always_merger
+
 
 class XcodeprojVersionProvider(VersionProvider):
     file = None
-    default_config = {
-        'fill_missing': 'right'
-    }
+    default_config = {"fill_missing": "right"}
     config = {}
-    search_re = r'(\s*)MARKETING_VERSION\s*=\s*(\d+(?:\.\d+)*);'
+    search_re = r"(\s*)MARKETING_VERSION\s*=\s*(\d+(?:\.\d+)*);"
 
     def __init__(self, config):
-        if 'commitizen_xcodeproj' in config._settings:
-            self.config = always_merger.merge(self.default_config.copy(), config._settings['commitizen_xcodeproj'])
+        if "commitizen_xcodeproj" in config._settings:
+            self.config = always_merger.merge(
+                self.default_config.copy(), config._settings["commitizen_xcodeproj"]
+            )
 
         self.__verify_config()
 
@@ -40,7 +40,7 @@ class XcodeprojVersionProvider(VersionProvider):
             version = match.group(2)
             v = version.split(".")
             while len(v) < 3:
-                if self.config['fill_missing'] == 'right':
+                if self.config["fill_missing"] == "right":
                     v.append("0")
                 else:
                     v.insert(0, "0")
@@ -54,14 +54,17 @@ class XcodeprojVersionProvider(VersionProvider):
         """
         old_content = self.file.read_text()
         new_content = re.sub(
-            self.search_re,
-            r'\1MARKETING_VERSION = %s;' % version,
-            old_content
+            self.search_re, r"\1MARKETING_VERSION = %s;" % version, old_content
         )
 
         self.file.write_text(new_content)
 
     def __verify_config(self):
-        allowed = [ 'left', 'right']
-        if self.config['fill_missing'] not in allowed:
-            raise InvalidConfigurationError(f"Filler for missing version specifier not one of {allowed}")
+        allowed = ["left", "right"]
+        if self.config["fill_missing"] not in allowed:
+            raise InvalidConfigurationError(
+                f"Filler for missing version specifier not one of {allowed}"
+            )
+            raise InvalidConfigurationError(
+                f"Filler for missing version specifier not one of {allowed}"
+            )
